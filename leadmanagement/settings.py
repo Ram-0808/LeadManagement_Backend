@@ -64,17 +64,30 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'leadmanagement.wsgi.application'
 
-# Database - PostgreSQL
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME', default='leadmanagement_db'),
-        'USER': config('DB_USER', default='postgres'),
-        'PASSWORD': config('DB_PASSWORD', default='password'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+# Database - PostgreSQL via DATABASE_URL (Vercel Postgres / Neon)
+import dj_database_url
+
+_dbcfg = config('DATABASE_URL', default='')
+if _dbcfg:
+    DATABASES = {
+        'default': dj_database_url.parse(
+            _dbcfg,
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
-}
+else:
+    # Local development fallback
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': config('DB_NAME', default='leadmanagement_db'),
+            'USER': config('DB_USER', default='postgres'),
+            'PASSWORD': config('DB_PASSWORD', default='password'),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='5432'),
+        }
+    }
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},

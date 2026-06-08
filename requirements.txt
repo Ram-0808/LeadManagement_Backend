@@ -2,9 +2,10 @@ Django==4.2.7
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.4.0
 django-cors-headers==4.3.1
-psycopg2-binary==2.9.9
+psycopg2-binary==2.9.10
 python-decouple==3.8
 openpyxl==3.1.2
 django-filter==23.3
 gunicorn==21.2.0
 setuptools>=69.0.0
+dj-database-url==2.1.0
